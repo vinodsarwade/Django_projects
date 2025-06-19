@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if data %}  
+    <ul>
+        {% for stock in data  %}
+            {% comment %} {% for key, value in stock.items %}
+                {{key}}: {{value}}<br/>
+            {% endfor %}  {% endcomment %}
+        <h1>{{stock.name}}</h1>
+        <li>Symbol: {{stock.symbol}}</li>
+        <li>changesPercentage: {{stock.changesPercentage}}</li>
+        <li>latest Price: {{stock.price}}</li>    
+        <li>day low: {{stock.dayLow}}</li>
+        <li>day High: {{stock.dayHigh}}</li>    
+        <li>marketCap: {{stock.marketCap}}</li>    
+        <li>exchange: {{stock.exchange}}</li>    
+
+        {% endfor %}
+    </ul>
+{% else %}
+<p>Something Went wrong..! Please Provide Correct Stock Name  </p>
+        
+{% endif %}
+    
+{% endblock  %}
+  
+

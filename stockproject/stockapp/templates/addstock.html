@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Add Stock..</h1><br/>
+
+<form action="{% url 'addstock' %}" class="form-inline my-2 my-lg-0" method="POST">
+    {% csrf_token %}
+    <input class="form-control mr-sm-4" type="search" placeholder="Add Stock To Portfolio" aria-label="Search" name="stockName">
+    <button class="btn btn-outline-success my-5 my-sm-0" type="submit">Add</button>
+</form>
+<br><br/>
+
+<table class="table table-striped table-bordered table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Company Name</th>
+        <th scope="col">Symbol</th>
+        <th scope="col">changes Percentages</th>
+        <th scope="col">Latest Price</th>
+        <th scope="col">Day Low</th>
+        <th scope="col">Day High</th>
+        <th scope="col">Market Cap</th>
+        <th scope="col">Exchange</th>
+      </tr>
+    </thead>
+
+    <tbody>
+        {% comment %} {% if stockName %} {% endcomment %}
+                {% for stock_item in output %}
+                    <tr>
+                        <th scope="row">{{stock_item.name}}</th>
+                        <td>{{stock_item.symbol}}</td>
+                        <td>{{stock_item.changesPercentage}}</td>
+                        <td>{{stock_item.price}}</td>
+                        <td>{{stock_item.dayLow}}</td>
+                        <td>{{stock_item.dayHigh}}</td>
+                        <td>{{stock_item.marketCap}}</td>
+                        <td>{{stock_item.exchange}}</td>
+                    </tr>
+                {% endfor %}
+        {% comment %} {% endif %} {% endcomment %}
+    </tbody>
+</table>
+
+
+
+{%endblock%}

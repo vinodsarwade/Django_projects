@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Delete Stock ....</h1>
+
+
+{% for stock in stockName %}
+    <a href="{% url 'delete' stock.id %}" class="btn btn-secondary">delete {{stock}}</a>
+    <br><br/>
+{% endfor %}
+
+ 
+{%endblock%}
