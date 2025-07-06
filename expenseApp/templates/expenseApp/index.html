@@ -2,6 +2,8 @@
 {% load  static %}
 {% load humanize%}
 {% block content %}
+
+    {% comment %} Add your expense using form {% endcomment %}
     <h1 class="font-bold m-10">Add your Expenses here➕ </h1>
     <form class= "shadow-lg m-10 rounded-lg" method="POST">
         {% csrf_token %}
@@ -36,30 +38,7 @@
         </div>
     </form>
 
-    {% comment %} <div>Expenses</div>
-    <div class="shadow-lg m-10 rounded-lg">
-        <div class="expense-header flex flex-wrap space-x-40">
-            <span>Name</span>
-            <span>Amount</span>
-            <span>Category</span>
-            <span>Date</span>
-            <span>Edit</span>
-            <span>Delete</span>
-        </div>
-
-        {% for expense in expenses %}
-        <div class="expense-row flex  px-20 py-5">
-            <span class="font-bold">{{expense.name}}</span>
-            <span class="font-bold">{{expense.amount}}</span>
-            <span class="font-bold">{{expense.category}}</span>
-            <span class="font-bold">{{expense.date}}</span>
-            <span class="font-bold"><a href="">Edit</span>
-            <span class="font-bold"><a href="">Delete</span>
-        </div>
-        {% endfor %}
-    </div>  {% endcomment %}
-
-
+    {% comment %} To Show Your expenses in Tabular form {% endcomment %}
     <div class="font-bold m-10"> Your Expenses 💵</div>
     <div class="shadow-lg m-10 rounded-lg">
         <div class="expense-header flex px-20 py-5 font-bold bg-gray-200">
@@ -86,6 +65,7 @@
         </div>
     </div>
 
+    {% comment %} To get date wise Expenses  {% endcomment %}
     <div class="flex">
         <div class=" w-1/3 shadow-lg ml-10 rounded-lg">
             <h1 class="ml-10 font-bold text-gray-500">LAST 365 DAYS EXPENSE </h1>
@@ -102,12 +82,13 @@
 
     </div>
 
+    {% comment %} To get daily expense for 30 days and categorical expense {% endcomment %}
     <div class="flex">
         <div class="w-1/2 shadow-lg m-10">
             <div class="flex flex-wrap font-bold px-20 py-5 space-x-40">
                 <span>Daily Expense (Past 30 Days)</span>
             </div>
-            <div>
+            <div id="dailyChart">
                 {% for daily in daily_sum %}
                     <div class="flex justify-between px-20 py-3 border-b">
                         <span>{{ daily.date }}</span>
@@ -118,7 +99,21 @@
                 {% endfor %}
             </div>
         </div>
-    </div>
-    
-        
+
+        <div class="w-1/2 shadow-lg m-10">
+            <div class="flex flex-wrap font-bold px-20 py-5 space-x-40">
+                <span>Categorical Expense</span>
+            </div>
+            <div id="categoryChart">
+                {% for category in category_sum %}
+                    <div class="flex justify-between px-20 py-3 border-b">
+                        <span>{{ category.category }}</span>
+                        <span class="text-green-500 font-bold text-xl">
+                            ₹{{ category.sum |intcomma }}
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>   
 {% endblock %} 

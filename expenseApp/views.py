@@ -3,6 +3,7 @@ from expenseApp.forms import ExpenseForm
 from expenseApp.models import Expense
 from django.db.models import Sum
 import datetime
+import json
 # Create your views here.
 
 def index(request):
@@ -28,7 +29,8 @@ def index(request):
     weekly_sum = data.aggregate(Sum('amount'))
 
     daily_sum = Expense.objects.filter().values('date').order_by('date').annotate(sum=Sum('amount'))
-    print(daily_sum)
+
+    category_sum = Expense.objects.filter().values('category').order_by('category').annotate(sum=Sum('amount'))
 
     form = ExpenseForm()
     return render(request,'expenseApp/index.html',
@@ -38,8 +40,8 @@ def index(request):
                    'yearly_sum':yearly_sum,
                    'monthly_sum':monthly_sum,
                    'weekly_sum':weekly_sum,
-                   'daily_sum':daily_sum,})
-
+                   'daily_sum':daily_sum,
+                   'category_sum':category_sum,})
 
 def edit(request, id):
     data = Expense.objects.get(id = id)
