@@ -1,0 +1,124 @@
+{% extends 'expenseApp/base.html' %}
+{% load  static %}
+{% load humanize%}
+{% block content %}
+    <h1 class="font-bold m-10">Add your Expenses here➕ </h1>
+    <form class= "shadow-lg m-10 rounded-lg" method="POST">
+        {% csrf_token %}
+        
+        <div class='form-container px-10 py-10 flex'>
+            <div class= "mx-10">
+                <div class="mb-5">
+                    <label class="font-bold">Expense Name</label>
+                </div>
+                <div class="rounded-lg">
+                    <div class="border"> {{ form.name}} </div>
+                </div>
+            </div>
+
+            <div class= "mx-10">
+                <div class="mb-5">
+                    <label class="font-bold">Amount</label>
+                </div>
+                <div class="border"> {{ form.amount}} </div>
+            </div>
+
+            <div class= "mx-10">
+                <div class="mb-5">
+                    <label class="font-bold">Category</label>
+                </div>
+                <div class="border"> {{ form.category}} </div>
+            </div>
+
+            <div class="mx-10 mt-10">
+                <button class="bg-green-500 px-5 py-2 rounded-lg text-white font-bold">Add</button>
+            </div>
+        </div>
+    </form>
+
+    {% comment %} <div>Expenses</div>
+    <div class="shadow-lg m-10 rounded-lg">
+        <div class="expense-header flex flex-wrap space-x-40">
+            <span>Name</span>
+            <span>Amount</span>
+            <span>Category</span>
+            <span>Date</span>
+            <span>Edit</span>
+            <span>Delete</span>
+        </div>
+
+        {% for expense in expenses %}
+        <div class="expense-row flex  px-20 py-5">
+            <span class="font-bold">{{expense.name}}</span>
+            <span class="font-bold">{{expense.amount}}</span>
+            <span class="font-bold">{{expense.category}}</span>
+            <span class="font-bold">{{expense.date}}</span>
+            <span class="font-bold"><a href="">Edit</span>
+            <span class="font-bold"><a href="">Delete</span>
+        </div>
+        {% endfor %}
+    </div>  {% endcomment %}
+
+
+    <div class="font-bold m-10"> Your Expenses 💵</div>
+    <div class="shadow-lg m-10 rounded-lg">
+        <div class="expense-header flex px-20 py-5 font-bold bg-gray-200">
+            <span class="w-1/6">Name</span>
+            <span class="w-1/6">Amount</span>
+            <span class="w-1/6">Category</span>
+            <span class="w-1/6">Date</span>
+            <span class="w-1/6">Edit</span>
+            <span class="w-1/6">Delete</span>
+        </div>
+        
+        {% for expense in expenses %}
+        <div class="expense-row flex px-20 py-5 border-b">
+            <span class="w-1/6 font-bold">{{ expense.name }}</span>
+            <span class="w-1/6"> ₹{{ expense.amount | intcomma }}</span>
+            <span class="w-1/6">{{ expense.category }}</span>
+            <span class="w-1/6">{{ expense.date }}</span>
+            <span class="w-1/6"><a href="{% url 'edit' expense.id %}"><img class="h-5 px-24"src="{% static 'expenseApp/images/edit.webp' %}"></a></span>
+            <span class="w-1/6"><a href="{% url 'delete' expense.id %}"><img class="h-5 px-24"src="{% static 'expenseApp/images/delete.webp' %}"></a></span>
+        </div>
+        {% endfor %}
+        <div class="text-green-700 font-bold justify-center px-80 m-5">
+            Total: ₹{{total_expense | intcomma}}
+        </div>
+    </div>
+
+    <div class="flex">
+        <div class=" w-1/3 shadow-lg ml-10 rounded-lg">
+            <h1 class="ml-10 font-bold text-gray-500">LAST 365 DAYS EXPENSE </h1>
+            <h1 class="ml-10 my-3 text-xl font-bold text-green-500">₹{{yearly_sum.amount__sum | intcomma}}</h1>
+        </div>
+        <div class=" w-1/3 shadow-lg ml-10 rounded-lg">
+            <h1 class="ml-10 font-bold text-gray-500">LAST 30 DAYS EXPENSE </h1>
+            <h1 class="ml-10  my-3 text-xl font-bold text-green-500">₹{{monthly_sum.amount__sum | intcomma}}</h1>
+        </div>
+        <div class=" w-1/3 shadow-lg ml-10 rounded-lg">
+            <h1 class="ml-10 font-bold text-gray-500">LAST 7 DAYS EXPENSE </h1>
+            <h1 class="ml-10 my-3 text-xl font-bold text-green-500">₹{{weekly_sum.amount__sum | intcomma}}</h1>
+        </div>
+
+    </div>
+
+    <div class="flex">
+        <div class="w-1/2 shadow-lg m-10">
+            <div class="flex flex-wrap font-bold px-20 py-5 space-x-40">
+                <span>Daily Expense (Past 30 Days)</span>
+            </div>
+            <div>
+                {% for daily in daily_sum %}
+                    <div class="flex justify-between px-20 py-3 border-b">
+                        <span>{{ daily.date }}</span>
+                        <span class="text-green-500 font-bold text-xl">
+                            ₹{{ daily.sum|intcomma }}
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+        
+{% endblock %} 
